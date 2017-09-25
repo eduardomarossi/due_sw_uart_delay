@@ -56,8 +56,6 @@ int sw_uart_receive_byte(due_sw_uart *duart, char* data) {
   return SW_UART_SUCCESS;
 }
 
-
-
 void sw_uart_write_byte(due_sw_uart *duart, char data) {
   digitalWrite(duart->pin_tx, HIGH);
   _sw_uart_wait_T(duart);
@@ -185,6 +183,7 @@ void _sw_uart_wait_T(due_sw_uart *duart) {
     _delay_250n();
   }
 }
+
 void sw_uart_enable_interrupt1(due_sw_uart *duart) {
 	sw_uart_1 = duart;
 	attachInterrupt(duart->pin_rx, _sw_uart_rx_interrupt1, FALLING);
