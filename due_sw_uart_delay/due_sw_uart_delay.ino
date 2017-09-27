@@ -1,21 +1,31 @@
 #include "sw_uart.h"
 
 due_sw_uart uart;
-
 void setup() {
-    Serial.begin(115200);
-  
-  // put your setup code here, to run once:
-  sw_uart_setup(&uart, 5, 6, 38400, 1, 8, 0);
-Serial.println(uart.ndelay_250);
+  Serial.begin(115200);
+  sw_uart_setup(&uart, 19, 18, 1, 8, SW_UART_EVEN_PARITY);
+  //sw_uart_setup(&uart, 0, 1, 1, 8, SW_UART_EVEN_PARITY);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  //char data;
-  //sw_uart_receive_byte(&uart, data);
-  sw_uart_write_byte(&uart, 'A');
-  Serial.println("DATA SENT");
-  delay(1000);
-  
+ test_write();
 }
+
+void test_write() {
+  sw_uart_write_string(&uart,"ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+  delay(1000);
+}
+
+void test_receive() {
+  char data;
+  int code = sw_uart_receive_byte(&uart, &data);
+  if(code == SW_UART_SUCCESS) {
+     Serial.print(data);
+  } else if(code == SW_UART_ERROR_PARITY) {
+    Serial.println("PARITY ERROR");
+  } else {
+    Serial.println("OTHER");
+    Serial.print(code);
+  }
+}
+

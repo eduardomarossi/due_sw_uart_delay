@@ -9,9 +9,7 @@ struct due_sw_uart {
 	int baudrate;
 	int stopbits;
 	int paritybit;
-	int enable_interrupt;
   int databits;
-  uint32_t ndelay_250;
 };
 
 typedef struct due_sw_uart due_sw_uart;
@@ -19,18 +17,18 @@ typedef struct due_sw_uart due_sw_uart;
 #define SW_UART_SUCCESS 0
 #define SW_UART_ERROR_FRAMING 1
 #define SW_UART_ERROR_PARITY  2
+#define SW_UART_NO_PARITY 0
+#define SW_UART_ODD_PARITY 1
+#define SW_UART_EVEN_PARITY 2
 
 
-void sw_uart_setup(due_sw_uart *duart, int rx, int tx, int baudrate, int stopbits, int databits, int paritybit);
+void sw_uart_setup(due_sw_uart *uart, int rx, int tx, int stopbits, int databits, int paritybit);
+void sw_uart_write_data(due_sw_uart *uart, char* bufferData, int writeN);
+void sw_uart_write_string(due_sw_uart *uart, char* stringData);
+int sw_uart_receive_byte(due_sw_uart *uart, char* data);
+void sw_uart_write_byte(due_sw_uart *uart, char data);
 
-void _sw_uart_rx_interrupt1(void);
-
-int sw_uart_receive_byte(due_sw_uart *duart, char* data);
-void sw_uart_write_byte(due_sw_uart *duart, char data);
-
-void _sw_uart_wait_half(due_sw_uart *duart);
-void _sw_uart_wait_T(due_sw_uart *duart);
-void sw_uart_enable_interrupt1(due_sw_uart *duart);
-
+void _sw_uart_wait_half(due_sw_uart *uart);
+void _sw_uart_wait_T(due_sw_uart *uart);
 
 #endif
